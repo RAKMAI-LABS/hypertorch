@@ -1,0 +1,4 @@
+/target
+*.rtw
+data/
+__pycache__/
