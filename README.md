@@ -1,5 +1,5 @@
 # HyperTorch
-
+[![CI](https://github.com/RAKMAI-LABS/hypertorch/actions/workflows/ci.yml/badge.svg)](https://github.com/RAKMAI-LABS/hypertorch/actions)
 **Train in Python. Ship in Rust.**
 
 A zero-dependency ML inference engine and model server in pure Rust.
