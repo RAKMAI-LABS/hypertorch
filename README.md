@@ -53,19 +53,19 @@ curl -X POST --data-binary @image.bin http://127.0.0.1:7878/predict
 
 ## What's inside
 
-- **`src/tensor.rs`** — strided N-d f32 tensor: matmul, broadcasting,
+- **`src/tensor.rs`**  strided N-d f32 tensor: matmul, broadcasting,
   ReLU, numerically stable softmax, plus graph primitives
   (`gather_rows`, `scatter_add_rows`, `l2_diff`) for message-passing
-  models with convergence-based adaptive halting — a model class that
+  models with convergence-based adaptive halting --> a model class that
   transformer-serving engines (vLLM et al.) structurally cannot run.
-- **`src/nn.rs`** — inference-first `Linear`/`Mlp` with PyTorch weight
+- **`src/nn.rs`**  inference-first `Linear`/`Mlp` with PyTorch weight
   loading (transpose handled at export, once).
-- **`src/weights.rs`** — RTW, a deliberately simple binary weight format
+- **`src/weights.rs`**  RTW, a deliberately simple binary weight format
   (~80 lines to parse); safetensors support planned.
-- **`examples/serve.rs`** — hand-rolled HTTP/1.1 server on `std::net`:
+- **`examples/serve.rs`**  hand-rolled HTTP/1.1 server on `std::net`:
   keep-alive, `Connection: close` compliance, `TCP_NODELAY`,
   thread-per-connection. ~130 lines, zero crates.
-- **`python/`** — PyTorch export script, FastAPI baseline server, and the
+- **`python/`**  PyTorch export script, FastAPI baseline server, and the
   raw-socket benchmark harness.
 
 Zero dependencies means zero: the library *and* every example build from
@@ -91,7 +91,7 @@ server with `TCP_NODELAY`; no change (but we got zero-dependency HTTP out
 of it). Hypothesis 2: our server ignored `Connection: close`, an actual
 spec violation --> fixed it; correct, but latency unchanged. The
 diagnostic that settled it: phase-isolating timings showed connect at
-101 µs, request at 81 µs, meaning the 15 ms lived in the *client* —
+101 µs, request at 81 µs, meaning the 15 ms lived in the *client* -->
 Python's urllib on Windows, which penalized our server ~10× more than
 uvicorn. An instrument that biased is not an instrument. The harness now
 uses a raw-socket HTTP client, identical for both servers. Moral:
@@ -107,6 +107,6 @@ benchmark your benchmark.
 
 ## License
 
-Dual-licensed under MIT or Apache-2.0, at your option — the Rust
+Dual-licensed under MIT or Apache-2.0, at your option --> the Rust
 ecosystem standard. (Add both license texts as `LICENSE-MIT` and
 `LICENSE-APACHE` before publishing.)
