@@ -9,7 +9,7 @@ binary --> no Python runtime, no dependency tree, no gigabytes of RAM.
 ## Why
 
 Inference is where AI budgets go: models are trained once and served
-forever, and the serving stack around the model — startup time, memory,
+forever, and the serving stack around the model --> startup time, memory,
 deployment weight --> is pure overhead. HyperTorch attacks that overhead:
 
 | metric | HyperTorch | FastAPI + PyTorch | advantage |
