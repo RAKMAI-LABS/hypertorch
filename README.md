@@ -4,13 +4,13 @@
 
 A zero-dependency ML inference engine and model server in pure Rust.
 Load weights trained in PyTorch, serve them from a single sub-megabyte
-binary — no Python runtime, no dependency tree, no gigabytes of RAM.
+binary --> no Python runtime, no dependency tree, no gigabytes of RAM.
 
 ## Why
 
 Inference is where AI budgets go: models are trained once and served
 forever, and the serving stack around the model — startup time, memory,
-deployment weight — is pure overhead. HyperTorch attacks that overhead:
+deployment weight --> is pure overhead. HyperTorch attacks that overhead:
 
 | metric | HyperTorch | FastAPI + PyTorch | advantage |
 |---|---|---|---|
@@ -23,10 +23,10 @@ deployment weight — is pure overhead. HyperTorch attacks that overhead:
 *Measured on Windows 11 (x86-64) serving an MNIST MLP (784→128→10),
 identical raw-socket benchmark client against both servers; ranges span
 multiple runs. Reproduce with `python python/bench.py`. Model compute is
-identical on both sides (same weights, same math) — the gap is the stack
+identical on both sides (same weights, same math) --> the gap is the stack
 around the model. One honest footnote: connection-per-request latency on
 Windows loopback shows a ~16 ms server-close teardown artifact (platform
-TCP quirk, absent on Linux, absent under keep-alive — which is what
+TCP quirk, absent on Linux, absent under keep-alive --> which is what
 production clients use).*
 
 **Correctness:** HyperTorch's forward pass matches PyTorch's logits to
@@ -77,7 +77,7 @@ Zero dependencies means zero: the library *and* every example build from
   lives. HyperTorch owns the other 90% of a model's life.
 - **f32, row-major, naive-but-cache-aware matmul.** Correctness before
   speed; SIMD/blocking lands when a benchmark demands it, not before.
-- **Determinism.** Same weights, same inputs, same bits — across Linux,
+- **Determinism.** Same weights, same inputs, same bits --> across Linux,
   Windows, and macOS.
 - **Adaptive-compute ready.** The graph primitives + convergence halting
   exist because fixed compute per input is the industry's expensive
@@ -86,10 +86,10 @@ Zero dependencies means zero: the library *and* every example build from
 ## How the benchmark client got fired (a debugging story)
 
 Early runs showed 15 ms p50 latency against a server we'd measured at
-81 µs with raw sockets. Hypothesis 1: Nagle's algorithm — rewrote the
+81 µs with raw sockets. Hypothesis 1: Nagle's algorithm --> rewrote the
 server with `TCP_NODELAY`; no change (but we got zero-dependency HTTP out
 of it). Hypothesis 2: our server ignored `Connection: close`, an actual
-spec violation — fixed it; correct, but latency unchanged. The
+spec violation --> fixed it; correct, but latency unchanged. The
 diagnostic that settled it: phase-isolating timings showed connect at
 101 µs, request at 81 µs, meaning the 15 ms lived in the *client* —
 Python's urllib on Windows, which penalized our server ~10× more than
